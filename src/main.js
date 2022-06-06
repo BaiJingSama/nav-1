@@ -10,13 +10,47 @@ const hashMap = storageKeyObject || [{
     logo: 'B',
     logoType: 'image',
     url: 'https://bilibili.com'
-}, ] // 把页面的内容存在一个数组内 然后把数组存在本地存储里
+}, {
+    logo: 'M',
+    logoType: 'text',
+    url: 'https://developer.mozilla.org/zh-CN/'
+}, {
+    logo: 'W',
+    logoType: 'text',
+    url: 'https://www.w3school.com.cn/jsref/index.asp'
+}, {
+    logo: 'C',
+    logoType: 'text',
+    url: 'https://www.csdn.net/'
+}, {
+    logo: 'G',
+    logoType: 'text',
+    url: 'https://google.com'
+}, {
+    logo: 'Z',
+    logoType: 'text',
+    url: 'https://www.zhihu.com/'
+}, {
+    logo: 'J',
+    logoType: 'text',
+    url: 'https://juejin.cn/'
+}, {
+    logo: 'I',
+    logoType: 'text',
+    url: 'https://www.iciba.com/'
+}, {
+    logo: 'G',
+    logoType: 'text',
+    url: 'https://github.com/'
+}] // 把页面的内容存在一个数组内 然后把数组存在本地存储里
 
 const simplifyUrl = (url) => {
     return url.replace('https://', '')
         .replace('http://', '')
         .replace('www.', '')
         .replace(/\/.*/, '') //删除/ 开头的内容
+        .replace('developer.mozilla.org', 'MDN官网')
+        .replace('com.cn', 'com')
 } //字符串删除替换API
 
 const render = () => {
@@ -28,24 +62,29 @@ const render = () => {
             <div class="logo">${node.logo}</div>
             <div class="link">${simplifyUrl(node.url)}</div>
             <div class="close">
-              <svg class="icon" >
+              <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-Close"></use>
               </svg>
             </div>
           </div>
         </li>`).insertBefore($lastLi)
-        console.log(hashMap);
         $li.on('click', () => {
             window.open(node.url, '_self') //代替a标签 打开地址，且不打开新窗口
         })
         $li.on('click', '.close', (e) => {
             e.stopPropagation() //阻止冒泡
-            hashMap.splice(index, 1)
-            const string = JSON.stringify(hashMap) //把当前hashMap再转化成字符串
-            localStorage.removeItem('key', string) //先删除
-            localStorage.setItem('key', string) //再保存一次
-            render() //重新渲染
+            if (confirm("确定要删除这个标签吗？")) {
+                hashMap.splice(index, 1)
+                const string = JSON.stringify(hashMap) //把当前hashMap再转化成字符串
+                localStorage.removeItem('key', string) //先删除
+                localStorage.setItem('key', string) //再保存一次
+                render() //重新渲染
+            } else {
+                return;
+            }
+
         })
+
     })
 }
 
@@ -56,7 +95,6 @@ $('.addButton').on('click', () => {
     if (url.indexOf('http') !== 0) {
         url = 'https://' + url
     }
-    console.log(url);
     hashMap.push({
         logo: simplifyUrl(url).toUpperCase()[0], // 把新添加的网址简化后的第一个字母加大写变成logo
         logoType: 'text',
@@ -84,4 +122,8 @@ $(document).on('keypress', (e) => {
         }
     }
 
+})
+const $input = $(".input")
+$input.on('keypress', (e) => {
+    e.stopPropagation()
 })

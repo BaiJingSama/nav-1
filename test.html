@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弹窗样式</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: "Microsoft YaHei";
+        }
+
+        .middle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .my-alert-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0.3;
+        }
+
+        .my-alert {
+            border-radius: 7px;
+            cursor: pointer;
+            overflow-y: scroll;
+            background-color: #ffffff;
+            box-shadow: none;
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 25px;
+            margin: auto;
+        }
+
+        .my-alert-title {
+            padding-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .my-alert-top {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .my-alert-x {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="middle">
+
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // jquery support
+            $.fn.extend({
+                center: function () {
+                    return this.each(function () {
+                        var top = ($(window).height() - $(this).outerHeight()) / 2;
+                        var left = ($(window).width() - $(this).outerWidth()) / 2;
+                        $(this).css({
+                            position: 'absolute',
+                            margin: 0,
+                            top: (top > 0 ? top : 0) + 'px',
+                            left: (left > 0 ? left : 0) + 'px'
+                        });
+                    });
+                }
+            });
+            $.rails.confirm = function (message,
+                element
+            ) { //message 要弹的内容， element 代表rails中confirm的元素标签的对象， 例如link_to上的data:{confirm: "123"},在html中link_to解析为a标签，element就可以是a标签的对象
+                return bootStrapConfirmModal(message, function a() {}, element);
+            };
+
+            $.rails.allowAction = function (element) {
+                var message = element.data('confirm'),
+                    answer = false,
+                    callback;
+                if (!message) {
+                    return true;
+                }
+
+                if ($.rails.fire(element, 'confirm')) {
+                    answer = $.rails.confirm(message, element);
+                    callback = $.rails.fire(element, 'confirm:complete', [answer]);
+                }
+                return answer && callback;
+            };
+
+            // 请求方法
+            $.rails.handleLink = function (link) {
+                //判断请求方式 remote有值且为true是ajax请求，否则是html请求
+                if (link.data('remote') !== undefined) {
+                    $.rails.handleRemote(link);
+                } else if (link.data('method')) {
+                    $.rails.handleMethod(link);
+                }
+                return false;
+            };
+        });
+
+        function bootStrapConfirmModal(message, callBack, element = "") {
+            // 定义要追加的html的confirm样式
+            let str = `<div id="modal-confirm">
+                       <div class='my-alert-background' style="background-color: transparent;"></div>
+                         <div class='layui-anim layui-anim-down my-alert' style="max-height:100px;width:300px; overflow-y: auto; display: flex; flex-flow: column; bottom: 500px; padding: 12px 25px 12px 25px;box-shadow: 1px -4px 20px rgb(0 0 0 / 20%);">
+                           <div class='my-alert-title' style="padding-bottom: 0px; font-size: 18px;">⚠️ 提示</div>
+                           <hr class="layui-border-blue">
+                           <div style= "padding: 0px 5px 2px 5px; color: #666; height: 100%;" class="modal-body"></div>
+                             <div style="align-self: flex-end;">
+                               <button class="layui-btn layui-btn-primary layui-border layui-btn-xs" id='modal-cancel_wy'>取消</button>
+                               <button class="layui-btn layui-btn-primary layui-border-red layui-btn-xs" id= 'modal-accept_wy'>确认</button>
+                             </div>
+                           </div>
+                         </div>
+                       </div>`
+            $('body').append(str); //追加html
+            $("#modal-confirm div.modal-body").html(message); //追加内容
+            $("#modal-confirm #modal-cancel_wy").click(function (e) { // 点击取消
+                $('#modal-confirm').remove(); // 移除添加的追加的内容
+                return false;
+            });
+            console.log(element)
+            if (element == '') { //如果为空代表没有可以接收到的对象
+                $("#modal-confirm #modal-accept_wy").click(function (e) {
+                    callBack();
+                    $('#modal-confirm').remove(); // 移除添加的追加的内容
+                })
+            } else {
+                //确认按钮
+                $("#modal-confirm #modal-accept_wy").click(function (e) {
+                    $('#modal-confirm').remove(); // 移除添加的追加的内容
+                    $.rails.handleLink(element); //请求url
+                    return false;
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>

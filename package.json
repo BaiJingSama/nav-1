@@ -1,6 +1,15 @@
 {
+  "scripts": {
+    "build": "rm -rf dist && parcel build src/index.html --no-minify --public-url ./"
+  },
   "devDependencies": {
     "cssnano": "^5.1.11",
     "postcss": "^8.4.14"
-  }
+  },
+  "name": "nav-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:BaiJingSama/nav-1.git",
+  "author": "Jackeybai <1303802862@qq.com>",
+  "license": "MIT"
 }
