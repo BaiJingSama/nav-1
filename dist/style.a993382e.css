@@ -1,0 +1,283 @@
+* {
+    box-sizing: border-box;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    /*继承*/
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    /* max-height: 100%; */
+}
+
+/* style*/
+
+
+
+body {
+    background: #eee;
+
+}
+
+
+
+/* 虽然body的区域有限，但给body加背景色 浏览器会智能扩展到整个网页 */
+
+.page-container {
+    position: relative;
+    min-height: 97vh;
+    /* border: 1px solid red; */
+}
+
+@media (min-width: 500px) {
+    .page-container {
+        position: relative;
+        height: 91vh;
+        /* border: 1px solid red; */
+    }
+}
+
+.globalHeader {
+    margin: 20px;
+    position: relative;
+}
+
+@media (min-width: 500px) {
+    .globalHeader {
+        margin: 20px;
+        margin-top: 80px;
+        margin-bottom: 80px;
+        position: relative;
+    }
+}
+
+.globalHeader>img {
+    max-width: 255px;
+    position: absolute;
+    top: -80px;
+    left: -60px;
+    z-index: -1;
+}
+
+@media (min-width: 500px) {
+    .globalHeader>img {
+        max-width: 255px;
+        position: absolute;
+        top: -100px;
+        left: 33%;
+    }
+}
+
+.searchForm {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (min-width: 500px) {
+    .searchForm {
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+.searchForm>input {
+    width: 100%;
+    margin-right: 10px;
+    margin-top: 90px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+@media (min-width: 500px) {
+    .searchForm>input {
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
+.searchForm>button {
+    white-space: nowrap;
+    border: 1px solid #ddd;
+    padding: 0 27px;
+    margin-top: 90px;
+    border-radius: 4px;
+    color: white;
+    background: #0F93DD;
+    font-size: 18px;
+}
+
+@media (min-width: 500px) {
+    .searchForm>button {
+        white-space: nowrap;
+        border: 1px solid #ddd;
+        padding: 0 27px;
+        margin-top: 90px;
+        border-radius: 4px;
+        color: white;
+        background: #0F93DD;
+        font-size: 12px;
+    }
+}
+
+.globalMain {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.globalMain>.ulBox {
+    margin-right: -15px;
+}
+
+.siteList {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 20px;
+    margin-bottom: 0;
+    justify-content: space-between;
+}
+
+@media screen and (min-width:500px) {
+    .siteList {
+        margin: 20px 20px;
+        flex-wrap: wrap;
+        margin-bottom: 0;
+        justify-content: flex-start;
+    }
+}
+
+
+
+@media screen and (max-width:385px) {
+    .siteList {
+        margin: 20px 7px;
+    }
+}
+
+
+.siteList>li {
+    margin-right: 15px;
+}
+
+.siteList .site {
+    width: 165px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 20px 0;
+    position: relative;
+}
+
+.siteList .site .close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 14px;
+}
+
+@media (min-width:500px) {
+    .siteList .site .close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 14px;
+        display: none;
+        cursor: default;
+    }
+
+    .siteList .site:hover>.close {
+        display: block;
+    }
+
+}
+
+.siteList .site>.logo {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 64px;
+    /* text-transform: uppercase; CSS控制全大写*/
+}
+
+.siteList .site>.link {
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.siteList .addButton {
+    width: 165px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 20px 0;
+}
+
+.siteList .addButton .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+}
+
+.siteList .addButton .icon {
+    width: 58px;
+    height: 58px;
+}
+
+.siteList .addButton .text {
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+
+
+.globalFooter {
+    position: absolute;
+    bottom: -2px;
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 15px;
+    background: #333;
+    display: flex;
+    justify-content: center;
+}
+
+.page-container .globalFooter .text {
+    font-size: 4px;
+    color: #fff;
+}
